@@ -1,5 +1,4 @@
 #!/bin/bash
-set -ex
 
 # Install to conda style directories
 [[ -d lib64 ]] && mv lib64 lib
