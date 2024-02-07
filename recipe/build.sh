@@ -27,6 +27,9 @@ for i in `ls`; do
 
                 if [[ $j =~ \.so\. ]]; then
                     patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
+                    # We want to remove runpath, otherwise it'll take precedence over rpath
+                    patchelf --set-runpath '' ${PREFIX}/${targetsDir}/$j
+
                 fi
             done
         fi
