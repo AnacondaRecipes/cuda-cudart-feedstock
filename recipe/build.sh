@@ -24,12 +24,9 @@ for i in `ls`; do
                 # Shared and static libraries are symlinked in $PREFIX/lib
                 ln -sv ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
 
-                # Conda-forge needs these .sos to find libraries in the environment, because
-                # the runtime dependencies are packaged in their ecosystem.
-                # For defaults, they're in the default system lib location.
-                # if [[ $j =~ \.so\. ]]; then
-                #     patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
-                # fi
+                if [[ $j =~ \.so\. ]]; then
+                    patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
+                fi
             done
         fi
     else
