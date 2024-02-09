@@ -15,6 +15,6 @@ upload_without_merge: True
 mark_private: True
 
 # don't skip existing
+# don't error overlinking (this should stay, see https://github.com/conda-forge/cuda-cudart-feedstock/pull/15)
 build_parameters:
   - "--suppress-variables"
-  - "--error-overlinking"
