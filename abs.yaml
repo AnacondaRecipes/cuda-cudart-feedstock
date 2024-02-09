@@ -15,6 +15,6 @@ upload_without_merge: True
 mark_private: True
 
 # don't skip existing
-# build_parameters:
-#   - "--suppress-variables"
-#   - "--error-overlinking"
+build_parameters:
+  - "--suppress-variables"
+  - "--error-overlinking"

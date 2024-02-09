@@ -25,8 +25,7 @@ source:
 
 build:
   number: 0
-  #skip: true  # [osx or (linux and s390x)]
-  skip: true # [not win]
+  skip: true  # [osx or (linux and s390x)]
 
 outputs:
   - name: cuda-cudart_{{ target_platform }}
