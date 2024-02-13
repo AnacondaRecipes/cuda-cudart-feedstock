@@ -3,8 +3,8 @@
 # It also prevents uploading to our public staging channel.
 # The below can probably all be deleted next time the feedstock needs updating.
 
-# channels:
-#   - lc030263
+channels:
+  - lc030263
 # upload_channels:
 #   - lc030263
 
