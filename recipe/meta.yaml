@@ -25,7 +25,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [osx]
+  skip: true  # [osx or (linux and s390x)]
 
 outputs:
   - name: cuda-cudart_{{ target_platform }}
@@ -39,8 +39,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
         - patchelf <0.18.0                      # [linux]
       host:
         - cuda-version {{ cuda_version }}
@@ -76,8 +76,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
         - {{ pin_subpackage("cuda-cudart_" + target_platform, exact=True) }}
@@ -120,8 +120,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -162,8 +162,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -204,8 +204,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -238,8 +238,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -271,8 +271,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -304,8 +304,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
       host:
         - cuda-version {{ cuda_version }}
       run:
