@@ -8,8 +8,6 @@ upload_channels:
 
 upload_to_staging_channel_in_pr: False
 
-mark_private: True
-
 # don't skip existing, to update any existing packages
 # don't error overlinking (this should stay, see https://github.com/conda-forge/cuda-cudart-feedstock/pull/15)
 build_parameters:

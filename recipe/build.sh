@@ -25,7 +25,9 @@ for i in `ls`; do
                 ln -sv ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
 
                 if [[ $j =~ \.so\. ]]; then
-                    patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
+                    # --force-rpath is added to reflect what conda-build does in other feedstocks; they just hadn't updated this one yet.
+                    # see https://github.com/conda-forge/cuda-cudart-feedstock/issues/21#issuecomment-1944420886
+                    patchelf --set-rpath '$ORIGIN' --force-rpath ${PREFIX}/${targetsDir}/$j
                 fi
             done
         fi
