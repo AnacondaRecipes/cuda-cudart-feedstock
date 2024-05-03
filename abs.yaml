@@ -1,14 +1,4 @@
-# The buildout of these CUDA packages is happening on a private channel for the moment,
-# while we wait for a redistribution license.
-# It also prevents uploading to our public staging channel.
-# The below can probably all be deleted next time the feedstock needs updating.
-
-upload_channels:
-  - lc030263
-
-upload_to_staging_channel_in_pr: False
-
-# don't skip existing, to update any existing packages
-# don't error overlinking (this should stay, see https://github.com/conda-forge/cuda-cudart-feedstock/pull/15)
-build_parameters:
-  - "--suppress-variables"
+# without this, only the linux-64 noarch package will be uploaded
+# (the noarch packages contain the libraries)
+noarch_upload:
+  - all
