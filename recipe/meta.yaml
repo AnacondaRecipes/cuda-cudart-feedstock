@@ -27,11 +27,11 @@ source:
 
 build:
   number: 1
-  skip: true  # [osx or ppc64le]
+  skip: true  # [osx or ppc64le or (linux and s390x)]
 
 requirements:
   build:
-    - {{ stdlib("c") }}
+    #- {{ stdlib("c") }}
     - patchelf <0.18.0  # [linux]
     - cf-nvidia-tools   # [linux]
 
@@ -47,8 +47,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -83,8 +83,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
         - {{ pin_subpackage("cuda-cudart_" + target_platform, exact=True) }}
@@ -127,8 +127,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -169,8 +169,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -211,8 +211,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -245,8 +245,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -278,8 +278,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -311,8 +311,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - {{ stdlib("c") }}
+        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
+        #- {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
