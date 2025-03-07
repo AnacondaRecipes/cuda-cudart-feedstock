@@ -1,6 +1,11 @@
 {% set name = "cuda-cudart" %}
+<<<<<<< HEAD
 {% set version = "12.4.127" %}
 {% set cuda_version = "12.4" %}
+=======
+{% set version = "12.8.90" %}
+{% set cuda_version = "12.8" %}
+>>>>>>> f53bbb2 (Merge pull request #40 from billysuh7/cuda-12.8.1)
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -18,6 +23,7 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/{{ platform }}/cuda_cudart-{{ platform }}-{{ version }}-archive.{{ extension }}
+<<<<<<< HEAD
   sha256: 0483bff9a36e7a44465db3cd42874f6f70f019297dcf803fbefcbf58d7448c8f  # [linux64]
   sha256: f5e636944c7817b4f178070daa1259f25b3e84ebd092305d32aa189b21ae37e3  # [ppc64le]
   sha256: fb96abcff3544384440b9259f9aeab9bf222a5775348546ef87c68ee02eee379  # [aarch64]
@@ -26,6 +32,22 @@ source:
 build:
   number: 0
   skip: true  # [osx or (linux and s390x)]
+=======
+  sha256: 8d566b5fe745c46842dc16945cf36686227536decd2302c372be86da37faca68  # [linux64]
+  sha256: 9e54c6686b193efa9642e7f6609ce78b064c5d576946478bcff4c024e1acdea7  # [aarch64 and arm_variant_type=="sbsa"]
+  sha256: 0cdde0058d47b3307bc2d58156cfadce092631a3d24616e1b88d6ef089b5ca73  # [aarch64 and arm_variant_type=="tegra"]
+  sha256: 4a39058fd8519444a81cfc7ae055d136f48d1a31ffa41ae255b35b2edd61e13b  # [win]
+
+build:
+  number: 0
+  skip: true  # [osx or ppc64le]
+
+requirements:
+  build:
+    - {{ stdlib("c") }}
+    - patchelf <0.18.0  # [linux]
+    - cf-nvidia-tools   # [linux]
+>>>>>>> f53bbb2 (Merge pull request #40 from billysuh7/cuda-12.8.1)
 
 outputs:
   - name: cuda-cudart_{{ target_platform }}
