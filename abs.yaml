@@ -2,3 +2,9 @@
 # (the noarch packages contain the libraries)
 noarch_upload:
   - all
+
+channels:
+- sk_test
+upload_channels:
+- sk_test
+upload_without_merge: true
