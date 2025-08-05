@@ -94,6 +94,9 @@ outputs:
     test:
       requires:
         - patchelf  # [linux]
+        # We need objdump on linux from binutils:
+        # test-rpath.sh: line 16: objdump: command not found
+        - binutils  # [linux]
       files:
         - test-rpath.sh
       commands:
