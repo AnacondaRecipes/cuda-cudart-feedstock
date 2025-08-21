@@ -20,7 +20,7 @@ for lib in `find ${PREFIX}/${targetsDir}/lib -type f`; do
     echo "$lib rpath: $rpath"
     if [[ $rpath != "\$ORIGIN" ]]; then
         errors+="$lib\n"
-    elif command -v objdump >/dev/null 2>&1 && [[ $(objdump -x ${lib} | grep "PATH") == *"RUNPATH"* ]]; then
+    elif [[ $(objdump -x ${lib} | grep "PATH") == *"RUNPATH"* ]]; then
         errors+="$lib\n"
     fi
 done
