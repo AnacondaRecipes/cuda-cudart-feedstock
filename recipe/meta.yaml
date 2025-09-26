@@ -1,13 +1,13 @@
 {% set name = "cuda-cudart" %}
-{% set version = "12.4.127" %}
-{% set cuda_version = "12.4" %}
+{% set version = "12.8.90" %}
+{% set cuda_version = "12.8" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
-{% set platform = "linux-ppc64le" %}  # [ppc64le]
-{% set platform = "linux-sbsa" %}  # [aarch64]
+{% set platform = "linux-sbsa" %}  # [aarch64 and arm_variant_type=="sbsa"]
+{% set platform = "linux-aarch64" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set platform = "windows-x86_64" %}  # [win]
 {% set target_name = "x86_64-linux" %}  # [linux64]
-{% set target_name = "ppc64le-linux" %}  # [ppc64le]
-{% set target_name = "sbsa-linux" %}  # [aarch64]
+{% set target_name = "sbsa-linux" %}  # [aarch64 and arm_variant_type=="sbsa"]
+{% set target_name = "aarch64-linux" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
@@ -18,14 +18,20 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/{{ platform }}/cuda_cudart-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 0483bff9a36e7a44465db3cd42874f6f70f019297dcf803fbefcbf58d7448c8f  # [linux64]
-  sha256: f5e636944c7817b4f178070daa1259f25b3e84ebd092305d32aa189b21ae37e3  # [ppc64le]
-  sha256: fb96abcff3544384440b9259f9aeab9bf222a5775348546ef87c68ee02eee379  # [aarch64]
-  sha256: 6a1c32e68ee1a95ca17334691ff9ad1ffe7f352c24a083d55e4c96b8063b2bcb  # [win]
+  sha256: 8d566b5fe745c46842dc16945cf36686227536decd2302c372be86da37faca68  # [linux64]
+  sha256: 9e54c6686b193efa9642e7f6609ce78b064c5d576946478bcff4c024e1acdea7  # [aarch64 and arm_variant_type=="sbsa"]
+  #sha256: 0cdde0058d47b3307bc2d58156cfadce092631a3d24616e1b88d6ef089b5ca73  # [aarch64 and arm_variant_type=="tegra"]
+  sha256: 4a39058fd8519444a81cfc7ae055d136f48d1a31ffa41ae255b35b2edd61e13b  # [win]
 
 build:
   number: 0
-  skip: true  # [osx or (linux and s390x)]
+  skip: true  # [osx]
+
+requirements:
+  build:
+    - {{ stdlib("c") }}
+    - patchelf <0.18.0  # [linux]
+    - cf-nvidia-tools   # [linux]
 
 outputs:
   - name: cuda-cudart_{{ target_platform }}
@@ -39,14 +45,12 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
-        - patchelf <0.18.0                      # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
@@ -76,19 +80,21 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
         - {{ pin_subpackage("cuda-cudart_" + target_platform, exact=True) }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - {{ pin_subpackage("cuda-cudart_" + target_platform, exact=True) }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       requires:
         - patchelf  # [linux]
+        # We need objdump on linux from binutils:
+        # test-rpath.sh: line 16: objdump: command not found
+        - binutils  # [linux]
       files:
         - test-rpath.sh
       commands:
@@ -120,8 +126,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -129,7 +135,6 @@ outputs:
         - {{ pin_subpackage("cuda-cudart", exact=True) }}
         - {{ pin_subpackage("cuda-cudart-dev_" + target_platform, exact=True) }}
         - {{ pin_subpackage("cuda-cudart-static", exact=True) }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
@@ -162,8 +167,8 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -171,7 +176,6 @@ outputs:
         - cuda-cudart-static_{{ target_platform }}
         - cuda-cccl_{{ target_platform }}
         - cuda-cudart_{{ target_platform }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
@@ -204,14 +208,13 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - {{ pin_subpackage("cuda-cudart-static_" + target_platform, exact=True) }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
@@ -238,13 +241,12 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
@@ -271,14 +273,13 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - cuda-driver-dev_{{ target_platform }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
@@ -304,13 +305,12 @@ outputs:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        #- arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} {{ conda_glibc_ver }}.*    # [linux]
+        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
