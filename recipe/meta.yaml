@@ -377,6 +377,7 @@ about:
 extra:
   skip-lints:
     - license_file_overspecified
+    - missing_tests
   feedstock-name: cuda-cudart
   recipe-maintainers:
     - conda-forge/cuda
