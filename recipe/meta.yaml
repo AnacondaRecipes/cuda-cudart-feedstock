@@ -2,12 +2,10 @@
 {% set version = "12.9.79" %}
 {% set cuda_version = "12.9" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
-{% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64 and arm_variant_type=="sbsa"]
 {% set platform = "linux-aarch64" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set platform = "windows-x86_64" %}  # [win]
 {% set target_name = "x86_64-linux" %}  # [linux64]
-{% set target_name = "ppc64le-linux" %}  # [ppc64le]
 {% set target_name = "sbsa-linux" %}  # [aarch64 and arm_variant_type=="sbsa"]
 {% set target_name = "aarch64-linux" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set target_name = "x64" %}  # [win]
@@ -27,7 +25,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [osx or ppc64le]
+  skip: true  # [osx]
 
 requirements:
   build:
@@ -40,6 +38,9 @@ outputs:
     build:
       noarch: generic
       binary_relocation: false
+      overlinking_ignore_patterns:
+        # Workaround for LIEF's 'not a valid TAG' error
+        - '*libcu*.so*'  # [linux and aarch64]
     files:                                         # [linux]
       - targets/{{ target_name }}/lib/libcu*.so.*  # [linux]
       # Windows DLLs are not needed at compile time
@@ -64,10 +65,12 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime architecture dependent libraries
       description: |
         CUDA Runtime architecture dependent libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-cudart
     build:
@@ -103,16 +106,17 @@ outputs:
         - test -f $PREFIX/targets/{{ target_name }}/lib/libcudart.so.{{ version }}                # [linux]
         - bash test-rpath.sh                                                                      # [linux]
         - if not exist %LIBRARY_BIN%\cudart64_{{ version.split(".")[0] }}.dll exit 1              # [win]
-
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-cudart-dev
     build:
@@ -145,10 +149,12 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-cudart-dev_{{ target_platform }}
     build:
@@ -195,10 +201,12 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-cudart-static
     files:       # [linux]
@@ -225,10 +233,12 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-cudart-static_{{ target_platform }}
     build:
@@ -258,10 +268,12 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-driver-dev
     build:
@@ -288,10 +300,12 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-driver-dev_{{ target_platform }}
     build:
@@ -319,20 +333,24 @@ outputs:
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
       license_url: https://docs.nvidia.com/cuda/eula/index.html
+      license_family: Other
       summary: CUDA Runtime Native Libraries
       description: |
         CUDA Runtime Native Libraries
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
 about:
   home: https://developer.nvidia.com/cuda-toolkit
   license_file: LICENSE
   license: LicenseRef-NVIDIA-End-User-License-Agreement
   license_url: https://docs.nvidia.com/cuda/eula/index.html
+  license_family: Other
   summary: CUDA Runtime Native Libraries
   description: |
     CUDA Runtime Native Libraries
   doc_url: https://docs.nvidia.com/cuda/index.html
+  dev_url: https://docs.nvidia.com/cuda/index.html
 
 extra:
   feedstock-name: cuda-cudart
