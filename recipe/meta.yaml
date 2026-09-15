@@ -390,6 +390,7 @@ about:
 extra:
   skip-lints:
     - missing_tests
+    - deprecate_license_url
   feedstock-name: cuda-cudart
   recipe-maintainers:
     - conda-forge/cuda
