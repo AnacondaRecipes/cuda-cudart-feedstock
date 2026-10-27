@@ -22,3 +22,25 @@ upstream_sources:
       - cuda-driver-dev
       - cuda-driver-dev_linux-64
       - cuda-driver-dev_linux-aarch64
+  - webpage:
+      url: https://api.anaconda.org/package/conda-forge/cuda-cudart
+      regex: '"version":\s*"(13\.2(?:\.\d+)*)"'
+    feedstock_branch: '13.2'
+    version_matchspec: '>=13.2,<13.3'
+    supported: true
+    packages:
+      - cuda-cudart
+      - cuda-cudart-dev
+      - cuda-cudart-dev_linux-64
+      - cuda-cudart-dev_linux-aarch64
+      - cuda-cudart-dev_win-64
+      - cuda-cudart-static
+      - cuda-cudart-static_linux-64
+      - cuda-cudart-static_linux-aarch64
+      - cuda-cudart-static_win-64
+      - cuda-cudart_linux-64
+      - cuda-cudart_linux-aarch64
+      - cuda-cudart_win-64
+      - cuda-driver-dev
+      - cuda-driver-dev_linux-64
+      - cuda-driver-dev_linux-aarch64
